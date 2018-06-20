@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Google Maps APIs</title>
+
+	<link href="style.css" rel="stylesheet">
+
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=Your_key?callback=init"></script>
+	<script src="gmaps.js"></script>
+</head>
+
+<body>
+
+		 <div id="map"></div>
+
+    <script>
+    	function init(){
+    		var events = [{'name' : 'aa', 'date' : '2018-01-01', 'location' : 'Tokyo, Japan'}, {'name' : 'bb', 'date' : '2018-03-02', 'location' : 'Yokosama, Japan'}];
+       
+	        var geocoder = new google.maps.Geocoder();
+	        for (var i = events.length - 1; i >= 0; i--) {
+	            
+	            drawMap(events[i]);
+
+	        }
+
+	        var mapObj = new GMaps({
+	              el: '#map',
+	              zoom: 8,
+	              lat: '35.6894875',
+	              lng: '139.69170639999993',
+	            });
+    	}
+        
+        
+       function drawMap(event){
+        geocoder.geocode( { 'address': event.location}, function(results, status) {
+              var location = results[0].geometry.location;
+              event.lat = location.lat();
+              event.lng = location.lng();
+                mapObj.addMarker({
+                    lat: event.lat,
+                    lng: event.lng,
+                    title: event.name,
+                    infoWindow: {
+                        content: '<p>' + event.date +' </p><p>' + event.name + '</p><p>' + event.location + '</p>',
+                        maxWidth: 200,
+                    }
+                });
+              //drawMap(event);
+            });
+       
+       }
+   </script>
+	
+</body>
+
+</html>
